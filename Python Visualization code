@@ -1,0 +1,215 @@
+      ROAD ACCIDENT ANALYSIS USING PYTHON IN POWER BI
+
+Count of Fatal Casualities:
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+# Adjust font size
+mpl.rcParams['font.size'] = 50
+# Sample data
+numbers = dataset.loc[0:307974, 'CY_Casualties'].tolist()
+names = dataset.loc[0:307974, 'Fatal (groups)'].tolist()
+# Define colors
+colors = [(255/255, 54/255, 121/255), (0/255, 185/255, 170/255)]
+# Create pie chart
+plt.figure(figsize=(8, 8))  # Adjust figure size if needed
+plt.pie(numbers, labels=names, autopct='%1.1f%%', startangle=140, pctdistance=0.85, colors=colors)
+# Draw circle
+centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+fig = plt.gcf()
+fig.gca().add_artist(centre_circle)
+# Equal aspect ratio ensures that pie is drawn as a circle
+plt.axis('equal')
+# Title
+plt.title('Fatal')
+# Show plot
+plt.show()
+
+
+
+
+
+Count of Serious Casualities:
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+# Adjust font size
+mpl.rcParams['font.size'] = 50
+# Sample data
+numbers = dataset.loc[0:307974, 'CY_Casualties'].tolist()
+names = dataset.loc[0:307974, 'Serious(groups)'].tolist()
+# Define colors
+colors = [(0/255, 185/255, 170/255),(255/255, 54/255, 121/255)]
+# Create pie chart
+plt.figure(figsize=(8, 8))  # Adjust figure size if needed
+plt.pie(numbers, labels=names, autopct='%1.1f%%', startangle=140, pctdistance=0.85, colors=colors)
+# Draw circle
+centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+fig = plt.gcf()
+fig.gca().add_artist(centre_circle)
+# Equal aspect ratio ensures that pie is drawn as a circle
+plt.axis('equal')
+# Title
+plt.title('Serious')
+# Show plot
+plt.show()
+
+
+
+
+
+
+
+Count of Slight Casualities:
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+# Adjust font size
+mpl.rcParams['font.size'] = 50
+# Sample data
+numbers = dataset.loc[0:307974, 'CY_Casualties'].tolist()
+names = dataset.loc[0:307974, 'Slight(groups)'].tolist()
+# Define colors
+colors = [(0/255, 185/255, 170/255),(255/255, 54/255, 121/255)]
+# Create pie chart
+plt.figure(figsize=(8,8))  # Adjust figure size if needed
+plt.pie(numbers, labels=names, autopct='%1.1f%%', startangle=140, pctdistance=0.85, colors=colors)
+# Draw circle
+centre_circle = plt.Circle((0, 0), 0.70, fc='white')
+fig = plt.gcf()
+fig.gca().add_artist(centre_circle)
+# Equal aspect ratio ensures that pie is drawn as a circle
+plt.axis('equal')
+# Title
+plt.title('Slight')
+# Show plot
+plt.show()
+
+
+
+
+
+
+
+Light_Condition and Weather_Conditions by Casualities:
+import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib as mpl
+# Define your data (replace 'dataset' with your actual dataset)
+mpl.rcParams['font.size'] = 20.0
+weather_data = dataset.groupby(['Weather_Conditions (groups)', 'Light_Conditions (groups)'])['CY_Casualties'].sum().unstack().fillna(0)
+# Define the width of each bar
+bar_width = 0.35
+# Define the positions for the bars
+positions = np.arange(len(weather_data))
+# Create the clustered bar chart
+plt.figure(figsize=(12, 6))
+for i, column in enumerate(weather_data.columns):
+    # Set colors for bars
+    colors = ['#FF3679', '#00B9AA']  # Using hexadecimal color codes
+    bars = plt.bar(positions + bar_width * i, weather_data[column], width=bar_width, label=column, color=colors[i])
+    for bar in bars:
+        height = bar.get_height()
+        plt.text(bar.get_x() + bar.get_width() / 2, height, f'{int(height)}', ha='center', va='bottom')
+# Customize labels and title
+plt.ylabel('Number of Casualties')
+plt.xticks(positions + bar_width * (len(weather_data.columns) - 1) / 2, weather_data.index, rotation=45)
+# Add legend
+plt.legend()
+# Show the plot
+plt.tight_layout()
+plt.show()
+Casualities By Road_Type:
+# The following code to create a dataframe and remove duplicated rows is always executed and acts as a preamble for your script: 
+# dataset = pandas.DataFrame(undefined)
+# dataset = dataset.drop_duplicates()
+# Paste or type your script code here:
+# The following code to create a dataframe and remove duplicated rows is always executed and acts as a preamble for your script: 
+# dataset = pandas.DataFrame(Road_Type, CY_Casualties)
+# dataset = dataset.drop_duplicates()
+# Paste or type your script code here:
+import matplotlib.pyplot as plt
+import matplotlib as mb
+# Adjust font size
+mb.rcParams['font.size'] = 22
+# Assuming you have already loaded your dataset into a DataFrame called 'dataset'
+# Assuming 'Total_Casualties' and 'Day_of_Week' are columns in your dataset
+# Extracting data for plotting
+numbers = dataset.loc[0:307974, 'CY_Casualties'].tolist()
+names = dataset.loc[0:307974, 'Road_Type'].tolist()
+# Plotting the horizontal bar chart
+plt.figure(figsize=(15, 6))
+bars = plt.barh(names, numbers, color='#FF3679', height=0.6)  # Use barh() for horizontal bar chart
+plt.grid(axis='x')  # Show gridlines on the x-axis
+# Adding tooltips
+for bar, name, number in zip(bars, names, numbers):
+    plt.text(number, name, str(number), ha='left', va='center')
+plt.tight_layout()  # Adjust layout
+plt.show()
+
+Casualities By Days of Week:
+import matplotlib.pyplot as plt
+import matplotlib as mb
+# Set the font size
+mb.rcParams['font.size'] = 18.0
+# Define the order of days of the week
+week_order = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+# Map day names to their corresponding numbers
+day_to_num = {'Sunday': 0, 'Monday': 1, 'Tuesday': 2, 'Wednesday': 3, 'Thursday': 4, 'Friday': 5, 'Saturday': 6}
+# Apply mapping and sort the data
+sorted_data = dataset.loc[0:307974].copy()
+sorted_data['Day_Num'] = sorted_data['Day_of_Week'].map(day_to_num)
+sorted_data = sorted_data.sort_values(by='Day_Num')
+# Plot the bar chart
+plt.figure(figsize=(12, 6))
+plt.bar(sorted_data['Day_of_Week'], sorted_data['CY_Casualties'], color='#FF3679', width=0.3)  # Set color to RGB(0, 167, 149)
+plt.xlabel('Day of Week')
+plt.ylabel('CY_Casualties')
+plt.show()
+
+
+
+
+
+
+
+
+Casualities By Location:
+import matplotlib.pyplot as plt
+import matplotlib as mpl
+# Adjust font size
+mpl.rcParams['font.size'] = 30.0
+# Sample data
+numbers = dataset.loc[0:307974, 'CY_Casualties'].tolist()
+names = dataset.loc[0:307974, 'Urban_or_Rural_Area'].tolist()
+# Define colors
+colors = ['#00B9AA','#FF3679']  # Using hexadecimal color codes
+# Create pie chart
+plt.figure(figsize=(8, 8))  # Adjust figure size if needed
+plt.pie(numbers, labels=names, autopct='%1.1f%%', startangle=140, pctdistance=0.85, colors=colors)
+# Equal aspect ratio ensures that pie is drawn as a circle
+plt.axis('equal')
+# Show plot
+plt.show()
+
+
+
+
+
+
+
+
+
+
+Number_of_Casualities by Speed_Limit:
+# The following code to create a dataframe and remove duplicated rows is always executed and acts as a preamble for your script: 
+# dataset = pandas.DataFrame(headcount)
+# dataset = dataset.drop_duplicates()
+# Paste or type your script code here:
+import matplotlib.pyplot as plt
+import seaborn as sns
+import matplotlib as mpl
+mpl.rcParams['font.size']=20
+plt.figure(figsize=(8, 4))
+sns.boxplot(data=dataset, y='Number_of_Casualties',x='Speed_limit', color='#00B9AA')
+plt.title('Distribution of Number of Casualties')
+plt.ylabel('Number of Casualties')
+plt.show()
+
